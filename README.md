@@ -66,6 +66,17 @@ Please use a private repo just email us when you are done.
 
 ## Your Solution Starts HERE!!!
 Use this area to describe your solution as requested in *_Section B_*. 
+## Architecture
+![AWS-ARCHITECTURE](/media/Architecture.png)
+The diagram above ilustrates the data load of an on prem database to the AWS Data Lake.
+
+
+### Services used:
+
+### Not on the picture:
+
+## Deployment
+![AWS-DEPLOYMENT](/media/deploy.png)
 
 
 ## Additional Comments / Information / Concerns
