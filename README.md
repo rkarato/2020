@@ -68,7 +68,10 @@ Please use a private repo just email us when you are done.
 Use this area to describe your solution as requested in *_Section B_*. 
 ## Architecture
 ![AWS-ARCHITECTURE](/media/Architecture.png)
-The diagram above ilustrates the data load of an on prem database to the AWS Data Lake.
+The diagram above ilustrates the serverless data pipeline.
+Data from an on premises database is uploaded to the cloud, landing into the company's the Data Lake.
+To facilitate the orchestration of the services used in this pipeline, step functions are used to control the different stages of the processing and provide a visual representation of the modules and state of execution
+
 
 
 ### Services used:
@@ -76,7 +79,7 @@ The diagram above ilustrates the data load of an on prem database to the AWS Dat
 ### Not on the picture:
 
 ## Deployment
-![AWS-DEPLOYMENT](/media/deploy.png)
+![AWS-DEPLOYMENT](/media/Deploy.png)
 
 
 ## Additional Comments / Information / Concerns
