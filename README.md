@@ -75,8 +75,42 @@ To facilitate the orchestration of the services used in this pipeline, step func
 
 
 ### Services used:
+#### Cloud Watch
+Integrates with Step Functions and enables scheduling for workflows. Also keeps logs of all the AWS services.
 
-### Not on the picture:
+#### Step Functions
+Manages workflows between services, state changes and human interactions
+
+#### Lambda
+Simple way to run code based on different languages, without managing servers. 
+
+#### Glue
+AWS ETL tool. Uses spark technology and has good integration with a number of other AWS services.
+
+#### SNS
+Used to send messages to different destination. The messages are queued and sent to subscribers that will translate them into email, SMS, http requests, etc.
+
+#### Systems Manager
+Service that provides a centralized repository for common configuration values. Also provides tools to facilitate administration of systems like combined monitoring and troubleshooting.
+
+#### Secrets Manager
+Service similar to Systems Manager capability of controling configuration information. It has more sofisticated mechanisms to safe guard sensitive infomrtion, encryption and rotation mechanisms
+
+#### S3
+Basic storage service of the AWS space. Cheap, reliable and integrated with all services that require long term storage.
+
+#### IAM
+Core services to control security and access to all AWS resources.
+
+#### Athena
+SQL interface to data stored in S3 and a few other services. The data is required to have a schema definition for the SQL engine to be able to function.
+
+#### VPC 
+It's the logical network organization of the AWS resources. It's correlated to the network setup of a physical to a data center.
+
+#### Generic Database
+The representation of a RDBMS data source present on premises.
+
 
 ## Deployment
 ![AWS-DEPLOYMENT](/media/Deploy.png)
