@@ -1,57 +1,64 @@
-AWSTemplateFormatVersion: '2020-11-13'
-Description: "Create CodeBuild project with required IAM/SG/SSM/CW Logs configuration and S3/DynamoDB for Terraform"
+Description: >-
+  Create CodeBuild project with required IAM/SG/SSM/CW Logs configuration and
+  S3/DynamoDB for Terraform
 Metadata:
-  AWS::CloudFormation::Interface:
+  'AWS::CloudFormation::Interface':
     ParameterGroups:
-      -
-        Label:
-          default: "Top-level environment configuration"
+      - Label:
+          default: Top-level environment configuration
         Parameters:
           - ProjectName
           - Environment
-      -
-        Label:
-          default: "VPC configuration for CodeBuild"
+      - Label:
+          default: VPC configuration for CodeBuild
         Parameters:
           - VpcID
           - PrivateSubnetIDs
-      -
-        Label:
-          default: "IAM configuration"
+      - Label:
+          default: IAM configuration
         Parameters:
           - IAMCodeBuildPoliciesARNs
-      -
-        Label:
-          default: "Git repository configuration (e.g. Bitbucket)"
+      - Label:
+          default: Git repository configuration (e.g. Bitbucket)
         Parameters:
           - ConfigRepoURL
           - GitSSHPrivateKey
           - GitBranch
           - DeploymentDirPath
-
+  'AWS::CloudFormation::Designer':
+    154a90d7-056f-48bc-b6a3-8d2a90c0e1a3:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -126.9666748046875
+        'y': -10.583333333333334
+      z: 0
 Parameters:
   ProjectName:
-    Description: String that will be used as basis for naming S3 bucket, CB project, etc.
+    Description: 'String that will be used as basis for naming S3 bucket, CB project, etc.'
     Type: String
     Default: aws-challenge
   Environment:
-    Description: Environmnet type from dev, int, prod
+    Description: 'Environmnet type from dev, int, prod'
     Type: String
-    Default: 'dev'
+    Default: dev
   VpcID:
-    Type: AWS::EC2::VPC::Id
+    Type: 'AWS::EC2::VPC::Id'
     Description: VPC in which CB project will run
   PrivateSubnetIDs:
-    Type: List<AWS::EC2::Subnet::Id>
+    Type: 'List<AWS::EC2::Subnet::Id>'
     Description: List of subnets in which CB will run (only private are supported)
   IAMCodeBuildPoliciesARNs:
-    Description: List of IAM policy ARNs to be attached to CodeBuild role (comma separated string, no spaces)
+    Description: >-
+      List of IAM policy ARNs to be attached to CodeBuild role (comma separated
+      string, no spaces)
     Default: 'arn:aws:iam::aws:policy/AdministratorAccess'
     Type: String
   ConfigRepoURL:
-    Description: (Optional)Full ssh URL to configuration repository (starting with ssh://)
+    Description: '(Optional)Full ssh URL to configuration repository (starting with ssh://)'
     Type: String
-    Default: 'somerepo.github.com'
+    Default: somerepo.github.com
   GitSSHPrivateKey:
     NoEcho: 'true'
     Description: Private SSH key to access repositories (read-only is sufficient)
@@ -63,11 +70,11 @@ Parameters:
   DeploymentDirPath:
     Description: List of ordered space separated Paths in repository to run terraform at
     Type: String
-    Default: "infrastructure assets"
+    Default: infrastructure assets
   TerraformVersion:
     Description: Terraform version
     Type: String
-    Default: '0.12.24'
+    Default: 0.12.24
 Resources:
   ####################################
   # PARAMETERS IN SSM PARAMETER STORE:
@@ -93,7 +100,21 @@ Resources:
   ####################################
   # CodeBuild:
   ####################################
-  
+  CodeBuildProject:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Source:
+        Type: GITHUB
+        Auth:
+          Type: OAUTH
+        Location: 'https://github.com/rkarato/python.git'
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/amazonlinux2-x86_64-standard:3.0-20.03.13'
+        Type: LINUX_CONTAINER
+      ServiceRole: 'arn:aws:iam::319649878343:role/service-role/codebuild-test-service-role'  
   ####################################
   # Terraform state:
   ####################################
@@ -107,7 +128,9 @@ Resources:
 ####################################
 # OUTPUTS:
 ####################################
+
 Outputs:
   CodeBuildURL:
     Description: URL to CodeBuild project that will run Terraform
-    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/codesuite/codebuild/projects/${CodeBuildProject}"
+    Value: !Sub >-
+      https://${AWS::Region}.console.aws.amazon.com/codesuite/codebuild/projects/${CodeBuildProject}
